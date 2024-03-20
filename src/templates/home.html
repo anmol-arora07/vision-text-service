@@ -1,0 +1,48 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Question</title>
+</head>
+<body>
+    <h1>Upload an Image and Ask a Question</h1>
+    <form id="uploadForm">
+        <input type="file" id="imageInput" accept="image/*">
+        <textarea id="questionInput" placeholder="Ask your question..."></textarea>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+        const imageFile = document.getElementById('imageInput').files[0];
+        const question = document.getElementById('questionInput').value;
+
+        const formData = new FormData();
+        formData.append('image', imageFile);
+
+        const listEl = document.querySelector('ul')
+        try {
+            // Construct the URL with the 'text' query parameter
+            const url = '/ask?text=' + encodeURIComponent(question);
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {console.log(data)
+            });
+        
+        
+            //window.location.href='http://127.0.0.1:8000/result?message='+encodeURIComponent(data);
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+                
+        });
+    </script>
+</body>
+</html>
